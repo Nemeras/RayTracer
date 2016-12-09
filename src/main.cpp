@@ -1,11 +1,13 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include <iostream>
 #include "CImg.h"
-#include "classes.cpp"
+#include "classes.hpp"
 
+using namespace std;
 
 int main(){
-	Vector truc = Vector();
-	printf("%f\n",truc.z);
+	Vector truc = Vector(0,0,0);
+	Vector machin = Vector(1,1,1);
+	truc = truc+machin;
+	cout <<truc.z << endl;
 	return 0;
 }
