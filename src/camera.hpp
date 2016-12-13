@@ -2,8 +2,9 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-class camera{
+class Camera{
 	public:
+		Camera(double fov,Point C,int width, int height);
 		double fov;
 		Point C;
 		Ray createRay(int i, int j);
