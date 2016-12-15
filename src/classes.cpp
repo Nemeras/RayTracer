@@ -65,7 +65,7 @@ Sphere::Sphere(Point origin, double radius,Material mat,int id) : origin(origin)
 Intersection::Intersection(bool b,Point p, Sphere* sphere) : notEmpty(b),intersectionPoint(p),sphere(sphere){
 }
 
-Intersection Sphere::intersection(Ray ray){
+Intersection Sphere::intersection(Ray& ray){
 	Vector v = ray.origin - origin;
 	double b =  2*ray.direction.dotProduct(v);
 	double c = v.normSquared() - radius*radius;
@@ -84,7 +84,7 @@ Intersection Sphere::intersection(Ray ray){
 	return Intersection(notEmpty,P,this);
 }
 
-Vector Sphere::normal(Point P){
+Vector Sphere::normal(Point& P){
 	Vector v = P - origin;
 	if (v.normSquared() < radius*radius) {
 		v.normalize();
@@ -99,7 +99,7 @@ Vector Sphere::normal(Point P){
 
 
 
-Intersection minI(Intersection i1, Intersection i2, Ray ray){
+Intersection& minI(Intersection& i1, Intersection& i2, Ray& ray){
 	if(!(i2.notEmpty)){
 		return i1;
 	}
@@ -119,14 +119,14 @@ Intersection minI(Intersection i1, Intersection i2, Ray ray){
 Image::Image(int width, int height): width(width), height(height), pixels(3*width*height){
 }
 
-void Image::setRGB(int i, int j, int red, int green, int blue){
-pixels[((height-i-1)*width+j)] = red;
-pixels[((height-i-1)*width+j) + width*height] = green;
-pixels[((height-i-1)*width+j) + 2*width*height] = blue;
+void Image::setRGB(int i, int j, Color color){
+pixels[((height-i-1)*width+j)] = color.red;
+pixels[((height-i-1)*width+j) + width*height] = color.green;
+pixels[((height-i-1)*width+j) + 2*width*height] = color.blue;
 }
 
 
-Color Sphere::getColor(Ray ray, int n, Scene scene, Point interpoint){
+/*Color Sphere::getColor(Ray ray, int n, Scene scene, Point interpoint){
 	Color result(0,0,0);
 	if (n>0 && isspec){
 		Vector v = Scene.reflect(ray, sphere,interpoint);
@@ -142,4 +142,4 @@ Color Sphere::getColor(Ray ray, int n, Scene scene, Point interpoint){
 	result.red = 0.8*result.red + 0.2*Mat.diff.red;
 	result.blue = 0.8*result.blue + 0.2*Mat.diff.blue;
 	result.green = 0.8*result.green + 0.2*Mat.diff.green;
-}
+}*/

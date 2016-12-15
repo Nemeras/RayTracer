@@ -53,7 +53,6 @@ class Material{
 
 };
 
-class Scene;
 
 class Sphere{
 	public:
@@ -62,9 +61,9 @@ class Sphere{
 		Material mat;
 		Point origin;
 		double radius;
-		Intersection intersection(Ray ray);
-		Vector normal(Point P);
-		Color getColor(Ray ray, int n, Scene scene, Point interpoint);
+		Intersection intersection(Ray& ray);
+		Vector normal(Point& P);
+//		Color getColor(Ray ray, int n, Scene scene, Point interpoint);
 
 };
 
@@ -77,7 +76,7 @@ class Intersection{
 
 };
 
-Intersection minI(Intersection i1, Intersection i2, Ray ray);
+Intersection& minI(Intersection& i1, Intersection& i2, Ray& ray);
 
 class Image{
 	public:
@@ -85,7 +84,7 @@ class Image{
 		int height;
 		std::vector<unsigned char> pixels;
 		Image(int width, int height);
-		void setRGB(int i, int j, int red, int green, int blue);
+		void setRGB(int i, int j, Color color);
 
 };
 
