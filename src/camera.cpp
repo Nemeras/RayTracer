@@ -1,7 +1,7 @@
 #include "camera.hpp"
 #include <cmath>
 
-Camera::Camera(double fov, Point C, int width, int height,int maxIter) : fov(fov),C(C),width(width),height(height),maxIter(maxIter){
+Camera::Camera(double fov, Point C, int width, int height,int maxIter, int nsample) : fov(fov),C(C),width(width),height(height),maxIter(maxIter),nsample(nsample){
 }
 
 Ray Camera::createRay(int i, int j){
@@ -11,10 +11,11 @@ Ray Camera::createRay(int i, int j){
 }
 
 void Camera::render(Scene& scene, Image& image){
+#pragma omp parallel for schedule(dynamic,1)
 for (int i = 0; i< height; i++){
 	for(int j = 0; j < width; j++){
 		Ray ray = createRay(i,j);
-		Color pixelColor = scene.getColor(ray,maxIter);
+		Color pixelColor = scene.getColor(ray,maxIter,nsample);
 		image.setRGB(i,j,pixelColor);
 
 

@@ -11,6 +11,7 @@ class Vector{
 		Vector operator-();
 		Vector operator*(double a);
 		Vector crossProduct(const Vector& v);
+		Vector orthogonal();
 		void normalize();
 		double norm();
 		double normSquared();
@@ -25,10 +26,15 @@ class Vector{
 class Color{
 	public:
 		Color(int redint, int greenint, int blueint);
+		Color(double red, double green, double blue);
 		double red;
 		double green;
 		double blue;
 		void gammaCorrection();
+		Color operator+(Color c);
+		Color operator-(Color c);
+		Color operator*(double n);
+		Color operator/(double n);
 
 };
 

@@ -29,14 +29,14 @@ int main(){
 	Sphere sphere3(center2,940,Material(red,white,false,false,1.,0.8),3);
 	Sphere sphere4(center3,940,Material(pink,white,false,false,1.,0.8),4);
 	Sphere sphere5(center4,940,Material(green,white,false,false,1.,0.8),5);
-	Sphere sphere6(center5,940,Material(white,white,true,false,1.,0.8),6);
-	Sphere sphere7(center6,940,Material(white,white,true,false,1.,0.8),7);
-	Sphere sphere(O,10,Material(white,white,true,false,1.7,0.8),1);
+	Sphere sphere6(center5,940,Material(white,white,false,false,1.,0.8),6);
+	Sphere sphere7(center6,940,Material(white,white,false,false,1.,0.8),7);
+	Sphere sphere(O,10,Material(white,white,false,false,1.7,0.8),1);
 	double fov = 50;
 	fov = fov * 0.0174533;
-	int width = 1920;
-	int height = 1080;
-	Camera camera(fov,C,width,height,8);
+	int width = 1280;
+	int height = 720;
+	Camera camera(fov,C,width,height,8,100);
 	
 	Image image(width,height);
 

@@ -47,7 +47,21 @@ void Vector::normalize(){
 	z=z/n;
 }
 
+Vector Vector::orthogonal(){
+	if (x==0 || y==0){
+		Vector v(y,-x,0);
+		v.normalize();
+		return v;
+	} else {
+		return Vector(1,0,0);
+
+	}
+
+}
 Color::Color(int redint, int greenint, int blueint) : red(redint/255.), green(greenint/255.), blue(blueint/255.){
+}
+
+Color::Color(double red, double green, double blue) : red(red),green(green),blue(blue){
 }
 
 void Color::gammaCorrection(){
@@ -55,6 +69,38 @@ void Color::gammaCorrection(){
 	green=pow(green,1/2.2);
 	blue=pow(blue,1/2.2);
 }
+
+Color Color::operator+(Color c){
+	Color nc(0,0,0);
+	nc.red =red + c.red;
+	nc.blue =blue + c.blue;
+	nc.green = green + c.green;
+	return nc;
+
+}
+
+
+Color Color::operator-(Color c){
+	Color nc(0,0,0);
+	nc.red = red - c.red;
+	nc.blue = blue - c.blue;
+	nc.green = green - c.green;
+	return nc;
+
+}
+
+Color Color::operator*(double n){
+	Color nc(red*n,green*n,blue*n);
+	return nc;
+}
+
+
+Color Color::operator/(double n){
+	Color nc(red/n,green/n,blue/n);
+	return nc;
+}
+
+
 
 Ray::Ray(Point orig,Vector dir) : origin(orig),direction(dir){
 }
