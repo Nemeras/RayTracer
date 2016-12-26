@@ -24,10 +24,11 @@ class Vector{
 
 class Color{
 	public:
-		Color(int red, int green, int blue);
-		int red;
-		int green;
-		int blue;
+		Color(int redint, int greenint, int blueint);
+		double red;
+		double green;
+		double blue;
+		void gammaCorrection();
 
 };
 
@@ -46,10 +47,13 @@ class Intersection;
 
 class Material{
 	public:
-		Material(Color diff, Color spec, bool isspec);
+		Material(Color diff, Color spec, bool isspec,bool istrans, double nmat, double specfrac);
 		Color diff;
 		Color spec;
+		bool istrans;
 		bool isspec;
+		double nmat;
+		double specfrac;
 
 };
 
@@ -63,14 +67,15 @@ class Sphere{
 		double radius;
 		Intersection intersection(Ray& ray);
 		Vector normal(Point& P);
-//		Color getColor(Ray ray, int n, Scene scene, Point interpoint);
+		Point correct(Point p);
 
 };
 
 class Intersection{
 	public:
-		Intersection(bool b, Point p,Sphere* sphere);
+		Intersection(bool b, Point p,Sphere* sphere,bool inout);
 		bool notEmpty;
+		bool inout;
 		Point intersectionPoint;
 		Sphere* sphere;
 

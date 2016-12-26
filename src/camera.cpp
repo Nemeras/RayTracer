@@ -11,8 +11,8 @@ Ray Camera::createRay(int i, int j){
 }
 
 void Camera::render(Scene& scene, Image& image){
-for (int i = 0; i< width; i++){
-	for(int j = 0; j < height; j++){
+for (int i = 0; i< height; i++){
+	for(int j = 0; j < width; j++){
 		Ray ray = createRay(i,j);
 		Color pixelColor = scene.getColor(ray,maxIter);
 		image.setRGB(i,j,pixelColor);

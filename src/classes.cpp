@@ -15,7 +15,7 @@ Vector Vector::operator-(const Vector& v) {
 }
 
 Vector Vector::operator-(){
-	return Vector(-x,-y-z);
+	return Vector(-x,-y,-z);
 }
 
 Vector Vector::operator*(double a){
@@ -47,22 +47,27 @@ void Vector::normalize(){
 	z=z/n;
 }
 
-Color::Color(int red, int green, int blue) : red(red), green(green), blue(blue){
+Color::Color(int redint, int greenint, int blueint) : red(redint/255.), green(greenint/255.), blue(blueint/255.){
 }
 
+void Color::gammaCorrection(){
+	red=pow(red,1/2.2);
+	green=pow(green,1/2.2);
+	blue=pow(blue,1/2.2);
+}
 
 Ray::Ray(Point orig,Vector dir) : origin(orig),direction(dir){
 }
 
 
-Material::Material(Color diff, Color spec, bool isspec) : diff(diff), spec(spec), isspec(isspec){
+Material::Material(Color diff, Color spec, bool isspec, bool istrans, double nmat, double specfrac) : diff(diff), spec(spec), isspec(isspec),istrans(istrans),nmat(nmat),specfrac(specfrac){
 }
 
 
 Sphere::Sphere(Point origin, double radius,Material mat,int id) : origin(origin),radius(radius),mat(mat),id(id){
 }
 
-Intersection::Intersection(bool b,Point p, Sphere* sphere) : notEmpty(b),intersectionPoint(p),sphere(sphere){
+Intersection::Intersection(bool b,Point p, Sphere* sphere, bool inout) : notEmpty(b),intersectionPoint(p),sphere(sphere),inout(inout){
 }
 
 Intersection Sphere::intersection(Ray& ray){
@@ -72,16 +77,17 @@ Intersection Sphere::intersection(Ray& ray){
 	double delta = b*b - 4*c;
 	bool notEmpty = delta >= 0; 
 	Point P;
+	bool inout = c>0;
 	if (notEmpty){
 		double t = (-b-sqrt(delta))/2;
 		if (t < 0){
 			t = (-b+sqrt(delta))/2;
 			if(t < 0)
-				return Intersection(false,P,this);
+				return Intersection(false,P,this,inout);
 		}
 		P = ray.origin + ray.direction*0.999*t;
 	}
-	return Intersection(notEmpty,P,this);
+	return Intersection(notEmpty,P,this,inout);
 }
 
 Vector Sphere::normal(Point& P){
@@ -120,26 +126,26 @@ Image::Image(int width, int height): width(width), height(height), pixels(3*widt
 }
 
 void Image::setRGB(int i, int j, Color color){
-pixels[((height-i-1)*width+j)] = color.red;
-pixels[((height-i-1)*width+j) + width*height] = color.green;
-pixels[((height-i-1)*width+j) + 2*width*height] = color.blue;
+	color.gammaCorrection();
+	int redint = 256 * color.red;
+	int blueint = 256 * color.blue;
+	int greenint = 256 * color.green;
+	pixels[((height-i-1)*width+j)] = std::min(255,redint);
+	pixels[((height-i-1)*width+j) + width*height] = std::min(255,greenint);
+	pixels[((height-i-1)*width+j) + 2*width*height] = std::min(255,blueint);
 }
 
 
-/*Color Sphere::getColor(Ray ray, int n, Scene scene, Point interpoint){
-	Color result(0,0,0);
-	if (n>0 && isspec){
-		Vector v = Scene.reflect(ray, sphere,interpoint);
-		Intersection intersection = Scene.intersection(Ray(interpoint,v);
-		if (intersection.notEmpty)
-			result = intersection.sphere->getColor(scene.reflect(ray, scene),n-1, scene, intersection);
+Point Sphere::correct(Point p){
+	Vector v = p - origin;
+	if (v.normSquared()>radius*radius){
+		v.normalize();
+		v = v*radius*0.999;
+		return(v+origin);
+	} else {
+		v.normalize();
+		v = v*radius*1.001;
+		return(v+origin);
 	}
-	
-	result.red = result.red * Mat.spec.red/255;
-	result.blue = result.blue * Mat.spec.blue/255;
-	result.green = result.green * Mat.spec.green/255;
-	
-	result.red = 0.8*result.red + 0.2*Mat.diff.red;
-	result.blue = 0.8*result.blue + 0.2*Mat.diff.blue;
-	result.green = 0.8*result.green + 0.2*Mat.diff.green;
-}*/
+
+}
