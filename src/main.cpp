@@ -20,6 +20,7 @@ int main(){
 	Point center5(1000,0,0);
 	Point center6(-1000,0,0);
 	Color black(0,0,0);
+	Color gray(50,50,50);
 	Color white(255,255,255);
 	Color blue(0,0,255);
 	Color red(255,0,0);
@@ -29,18 +30,20 @@ int main(){
 	Sphere sphere3(center2,940,Material(red,white,false,false,1.,0.8),3);
 	Sphere sphere4(center3,940,Material(pink,white,false,false,1.,0.8),4);
 	Sphere sphere5(center4,940,Material(green,white,false,false,1.,0.8),5);
-	Sphere sphere6(center5,940,Material(white,white,false,false,1.,0.8),6);
-	Sphere sphere7(center6,940,Material(white,white,false,false,1.,0.8),7);
-	Sphere sphere(O,10,Material(white,white,false,false,1.7,0.8),1);
-	double fov = 50;
+	Sphere sphere6(center5,940,Material(gray,white,true,false,1.,0.8),6);
+	Sphere sphere7(center6,940,Material(gray,white,true,false,1.,0.8),7);
+	Sphere sphere(O,10,Material(white,white,true,false,1.7,0.8),0);
+	double fov = 60;
 	fov = fov * 0.0174533;
-	int width = 1280;
-	int height = 720;
-	Camera camera(fov,C,width,height,8,100);
+	int width = 1920;
+	int height = 1080;
+	Camera camera(fov,C,width,height,8,1,false);
+	
 	
 	Image image(width,height);
 
 	vector<Sphere> vectorscene = {sphere,sphere2,sphere3,sphere4,sphere5,sphere6,sphere7};
+//	vector<Sphere> vectorscene = {sphere,sphere2,sphere3,sphere5,sphere6,sphere7};
 //	vector<Sphere> vectorscene = {sphere,sphere2};
 //	vector<Sphere> vectorscene = {sphere};
 	Scene scene(vectorscene,L,1.);
